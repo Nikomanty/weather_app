@@ -52,7 +52,7 @@ class HomeState extends State<Home> {
 					items: [
 						BottomNavigationBarItem(
 							icon: new Icon(Icons.home),
-							title: new Text("Location"),
+							title: new Text("Home"),
 						),
 						BottomNavigationBarItem(
 							icon: new Icon(Icons.camera),

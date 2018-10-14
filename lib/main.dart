@@ -6,7 +6,7 @@ void main(){
     title: "WeatherApp",
     home: Home(),
     theme: new ThemeData(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       primaryColor: Colors.red,
       accentColor: Colors.redAccent,
     ),

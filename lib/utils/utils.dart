@@ -1,2 +1,2 @@
-final appId = "bfb39c0af57efc744c5681e0560f3110";
+final appId = "d45e8ca335bd9aa2a856d494e9d8458c";
 final defaultCity = "Oulu";

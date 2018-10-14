@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import '../utils/utils.dart' as util;
 import 'package:http/http.dart' as http;
 
+
+
+var dateFormat;
+var timeFormat;
+
 class Location extends StatefulWidget{
+
+
   @override
   State<StatefulWidget> createState() {
     return new LocationState();
@@ -13,19 +20,21 @@ class Location extends StatefulWidget{
 
 }
 
+
+
 class LocationState extends State<Location>{
 
-	void showStuff() async {
-		Map data = await getWeather(util.appId, util.defaultCity);
-		print(data.toString());
-		print(data['main']['temp']);
-	}
 
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
 	    backgroundColor: Theme.of(context).backgroundColor,
+	    appBar: new AppBar(
+		    title: new Text("WeatherApp"),
+
+
+	    ),
 
 	    body: new Container(
 		    padding: EdgeInsets.all(10.0),
@@ -63,7 +72,7 @@ class LocationState extends State<Location>{
 									    children: <Widget>[
 
 									    	new Image.asset(
-											    "assets/images/light_rain.png",
+											    "assets/images/rain_three_drop.png",
 											    height: 150.0,
 											    width: 150.0,
 										    ),
@@ -76,15 +85,14 @@ class LocationState extends State<Location>{
 							    new Expanded(
 								    child: Padding(
 									    padding: EdgeInsets.only(left: 50.0),
-								      child: Column(
-									    crossAxisAlignment: CrossAxisAlignment.start,
-									    children: <Widget>[
+									    child: Column(
+									      crossAxisAlignment: CrossAxisAlignment.start,
+									      children: <Widget>[
 										    updateMainWeatherWidget("Oulu", "main", "temp", "ºC"),
 										    updateMainWeatherWidget("Oulu", "main", "humidity", "%"),
-										    updateMainWeatherWidget("Oulu", "main", "temp", "mm"),
 										    updateMainWeatherWidget("Oulu", "wind", "speed", "m/s"),
+									      ],
 
-									    ],
 								      ),
 								    )
 							    ),
@@ -94,79 +102,14 @@ class LocationState extends State<Location>{
 					    ),
 				    ),
 
-				    new Divider(height: 15.0, color: Colors.black,),
 
-				    new Text(
-					    "Hour forecast",
-					    style: new TextStyle(
-						    fontSize: 20.0,
-
-					    ),
-				    ),
-
-				    new SafeArea(
-					    child: new Container(
-						    height: 120.0,
-						    child: ListView.builder(
-							    itemCount: 10,
-							    scrollDirection: Axis.horizontal,
-							    itemBuilder: (BuildContext context, index){
-								    return new Padding(
-									    padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-									    child: new Column(
-										    mainAxisAlignment: MainAxisAlignment.center,
-										    children: <Widget>[
-											    new Text("10:00", style: new TextStyle(color: Colors.black),),
-											    new Image.asset("assets/images/light_rain.png", height: 48.0, width: 48.0),
-											    new Text("+10 ºC", style: new TextStyle(color: Colors.black),),
-											    new Text("2.0 mm", style: new TextStyle(color: Colors.black),),
-
-
-										    ],
-									    ),
-								    );
-							    }
-
-						    ),
-					    ),
-				    ),
 
 				    new Divider(height: 15.0, color: Colors.black,),
 
-				    new Text(
-					    "Week forecast",
-					    style: new TextStyle(
-						    fontSize: 20.0,
+				    new Text("5 day / 3 Hour Forecast", style: new TextStyle(fontSize: 20.0,),),
 
-					    ),
-				    ),
+				    new SafeArea(child: weekForecast("Oulu")),
 
-				    new SafeArea(
-					    child: new Container(
-							    height: 120.0,
-							    child: ListView.builder(
-								    itemCount: 10,
-								    scrollDirection: Axis.horizontal,
-								    itemBuilder: (BuildContext context, index){
-								    	return new Padding(
-										    padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-										    child: new Column(
-											    mainAxisAlignment: MainAxisAlignment.center,
-											    children: <Widget>[
-											    	new Text("12.10", style: new TextStyle(color: Colors.black),),
-												    new Image.asset("assets/images/light_rain.png", height: 48.0, width: 48.0),
-												    new Text("+10 ºC", style: new TextStyle(color: Colors.black),),
-												    new Text("2.0 mm", style: new TextStyle(color: Colors.black),),
-
-
-											    ],
-										    ),
-									    );
-								    }
-
-							    ),
-						    ),
-				    ),
 
 			    ],
 		    ),
@@ -183,11 +126,21 @@ class LocationState extends State<Location>{
   	return json.decode(response.body);
 
   }
+	Future<Map> hourWeather(String appId, String city) async {
+		String apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=$city&appid=${util.appId}&units=metric";
+
+		http.Response response = await http.get(apiUrl);
+
+		return json.decode(response.body);
+
+	}
+
+
 
   Widget updateMainWeatherWidget(String city, String jsonObject, String jsonField, String suffix){
+
 		return new FutureBuilder(
 			future: getWeather(util.appId, city),
-
 			builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
 				if(snapshot.hasData){
 					Map content = snapshot.data;
@@ -204,13 +157,6 @@ class LocationState extends State<Location>{
 									),
 								),
 
-
-
-//				      new ListTile(
-//									title:
-//								),
-
-
 							],
 						),
 					);
@@ -222,5 +168,51 @@ class LocationState extends State<Location>{
   }
 
 
+  Widget weekForecast(String city){
 
-}
+		return FutureBuilder(
+			future: hourWeather(util.appId, city),
+			builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
+				if(snapshot.hasData){
+					Map content = snapshot.data;
+					List _days = content['list'];
+
+					return new Container(
+						height: 150.0,
+						child: ListView.builder(
+							itemCount: _days.length,
+							scrollDirection: Axis.horizontal,
+							itemBuilder: (BuildContext context, position){
+
+								return new Padding(
+									padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+									child: new Column(
+										mainAxisAlignment: MainAxisAlignment.center,
+										children: <Widget>[
+											new Text("${_days[position]['dt_txt']}", style: new TextStyle(color: Colors.black),),
+											new Padding(padding: EdgeInsets.only(top: 10.0)),
+//											new Text("$_time", style: new TextStyle(color: Colors.black),),
+											new Image.asset("assets/images/rain_three_drop.png", height: 60.0, width: 60.0),
+											new Text("${_days[position]['main']['temp']} ºC", style: new TextStyle(color: Colors.black,),),
+											new Text("${_days[position]['main']['humidity']} %", style: new TextStyle(color: Colors.black),),
+
+
+										],
+									),
+								);
+
+							}
+
+						),
+					);
+
+				}else {
+					return new Container();
+				}
+
+
+			}
+		);
+
+  }
+

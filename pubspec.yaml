@@ -21,6 +21,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   intl: "^0.15.4"
 
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -43,8 +46,21 @@ flutter:
   #  - images/a_dot_ham.jpeg
 
   assets:
-    - assets/images/cloud6.png
-    - assets/images/light_rain.png
+    - assets/images/clouds_one.png
+    - assets/images/clouds_three.png
+    - assets/images/half_cloudy.png
+    - assets/images/lightning.png
+    - assets/images/lightning_rain.png
+    - assets/images/rain_one_drop.png
+    - assets/images/rain_two_drop.png
+    - assets/images/rain_three_drop.png
+    - assets/images/raindrop.png
+    - assets/images/sun.png
+#    - assets/images/light_rain.png
+    - assets/images/little_icons/humidity_icon.png
+    - assets/images/little_icons/raindrop_icon.png
+    - assets/images/little_icons/temperature_icon.png
+    - assets/images/little_icons/wind_speed_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
