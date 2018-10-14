@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
+import '../utils/utils.dart' as util;
+import 'package:http/http.dart' as http;
 
 class Location extends StatefulWidget{
   @override
@@ -10,10 +14,17 @@ class Location extends StatefulWidget{
 }
 
 class LocationState extends State<Location>{
+
+	void showStuff() async {
+		Map data = await getWeather(util.appId, util.defaultCity);
+		print(data.toString());
+		print(data['main']['temp']);
+	}
+
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
 	    backgroundColor: Theme.of(context).backgroundColor,
 
 	    body: new Container(
@@ -41,7 +52,6 @@ class LocationState extends State<Location>{
 
 			    	new Padding(padding: EdgeInsets.symmetric(vertical: 2.5, horizontal: 0.0)),
 
-
 			    	new Container(
 					    child: new Row(
 						    mainAxisAlignment: MainAxisAlignment.center,
@@ -64,56 +74,18 @@ class LocationState extends State<Location>{
 							    ),
 
 							    new Expanded(
-								    child: Column(
-									    crossAxisAlignment: CrossAxisAlignment.center,
+								    child: Padding(
+									    padding: EdgeInsets.only(left: 50.0),
+								      child: Column(
+									    crossAxisAlignment: CrossAxisAlignment.start,
 									    children: <Widget>[
-									    	new Padding(
-											    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-											    child: new Text(
-												    "Temp ºC",
-												    style: new TextStyle(
-													    fontSize: 25.0,
-
-												    ),
-											    ),
-										    ),
-
-										    new Padding(
-											    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-											    child: new Text(
-												    "Temp ºC",
-												    style: new TextStyle(
-													    fontSize: 25.0,
-
-												    ),
-											    ),
-										    ),
-
-										    new Padding(
-											    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-											    child: new Text(
-												    "Temp ºC",
-												    style: new TextStyle(
-													    fontSize: 25.0,
-
-												    ),
-											    ),
-										    ),
-
-										    new Padding(
-											    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
-											    child: new Text(
-												    "Temp ºC",
-												    style: new TextStyle(
-													    fontSize: 25.0,
-
-												    ),
-											    ),
-										    ),
-
-
+										    updateMainWeatherWidget("Oulu", "main", "temp", "ºC"),
+										    updateMainWeatherWidget("Oulu", "main", "humidity", "%"),
+										    updateMainWeatherWidget("Oulu", "main", "temp", "mm"),
+										    updateMainWeatherWidget("Oulu", "wind", "speed", "m/s"),
 
 									    ],
+								      ),
 								    )
 							    ),
 
@@ -145,7 +117,7 @@ class LocationState extends State<Location>{
 										    mainAxisAlignment: MainAxisAlignment.center,
 										    children: <Widget>[
 											    new Text("10:00", style: new TextStyle(color: Colors.black),),
-											    new Image.network('https://openweathermap.org/img/w/01d.png'),
+											    new Image.asset("assets/images/light_rain.png", height: 48.0, width: 48.0),
 											    new Text("+10 ºC", style: new TextStyle(color: Colors.black),),
 											    new Text("2.0 mm", style: new TextStyle(color: Colors.black),),
 
@@ -154,8 +126,6 @@ class LocationState extends State<Location>{
 									    ),
 								    );
 							    }
-
-
 
 						    ),
 					    ),
@@ -184,11 +154,9 @@ class LocationState extends State<Location>{
 											    mainAxisAlignment: MainAxisAlignment.center,
 											    children: <Widget>[
 											    	new Text("12.10", style: new TextStyle(color: Colors.black),),
-												    new Image.network('https://openweathermap.org/img/w/01d.png'),
+												    new Image.asset("assets/images/light_rain.png", height: 48.0, width: 48.0),
 												    new Text("+10 ºC", style: new TextStyle(color: Colors.black),),
 												    new Text("2.0 mm", style: new TextStyle(color: Colors.black),),
-
-
 
 
 											    ],
@@ -196,20 +164,63 @@ class LocationState extends State<Location>{
 									    );
 								    }
 
-
-
 							    ),
 						    ),
 				    ),
-
 
 			    ],
 		    ),
 	    ),
 
-
-
-
     );
   }
+
+  Future<Map> getWeather(String appId, String city) async {
+  	String apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=$city&appid=${util.appId}&units=metric";
+
+  	http.Response response = await http.get(apiUrl);
+
+  	return json.decode(response.body);
+
+  }
+
+  Widget updateMainWeatherWidget(String city, String jsonObject, String jsonField, String suffix){
+		return new FutureBuilder(
+			future: getWeather(util.appId, city),
+
+			builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
+				if(snapshot.hasData){
+					Map content = snapshot.data;
+					return new Container(
+						child: new Column(
+							mainAxisAlignment: MainAxisAlignment.end,
+							children: <Widget>[
+
+								new Padding(
+									padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
+									child: new Text(
+										"${content['$jsonObject']['$jsonField'].toString()} $suffix",
+										style: new TextStyle(fontSize: 25.0),
+									),
+								),
+
+
+
+//				      new ListTile(
+//									title:
+//								),
+
+
+							],
+						),
+					);
+				} else {
+					return new Container();
+				}
+
+			});
+  }
+
+
+
 }
