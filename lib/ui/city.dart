@@ -56,11 +56,7 @@ class CityState extends State<City> {
 				padding: EdgeInsets.all(10.0),
 				child: new ListView(
 					children: <Widget>[
-						new Center(
-						  child: new Text(_city == null ? util.defaultCity : _city,
-						  	style: new TextStyle(fontSize: 35.0, color: Colors.white),
-						  ),
-						),
+						showCity(),
 
 						new Padding(padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0)),
 
@@ -154,6 +150,14 @@ class CityState extends State<City> {
 		}else{
 			print("Nothing");
 		}
+	}
+
+	Widget showCity(){
+		return new Center(
+			child: new Text(_city == null ? util.defaultCity : _city,
+				style: new TextStyle(fontSize: 35.0, color: Colors.white),
+			),
+		);
 	}
 
 	//Widget for current weather
