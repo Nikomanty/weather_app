@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './ui/city.dart';
 
-void main(){
+void main() {
   runApp(new MaterialApp(
     title: "WeatherApp",
     home: City(),
