@@ -151,8 +151,7 @@ class CityState extends State<City> {
   }
 
   //Widget for current weather
-  Widget updateCurrentWeatherWidget(
-      String city, String jsonObject, String jsonField, String suffix) {
+  Widget updateCurrentWeatherWidget(String city, String jsonObject, String jsonField, String suffix) {
     return new FutureBuilder(
         future: getWeather(util.appId, city == null ? util.defaultCity : city),
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
