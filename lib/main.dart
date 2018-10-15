@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import './ui/home.dart';
+import './ui/city.dart';
 
 void main(){
   runApp(new MaterialApp(
     title: "WeatherApp",
-    home: Home(),
+    home: CityTab(),
     theme: new ThemeData(
-      backgroundColor: Colors.white70,
-      primaryColor: Colors.red,
-      accentColor: Colors.redAccent,
+      backgroundColor: Colors.blueGrey,
+      primaryColor: Colors.blue,
+      accentColor: Colors.blueAccent,
     ),
   ));
 }

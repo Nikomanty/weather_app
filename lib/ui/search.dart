@@ -5,41 +5,60 @@ class Search extends StatefulWidget{
   State<StatefulWidget> createState() {
     return new SearchState();
   }
-
-
 }
 
 class SearchState extends State<Search> {
 
-	final TextEditingController searchController = new TextEditingController();
+
+	var searchController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
 	    backgroundColor: Theme.of(context).backgroundColor,
+	    appBar: new AppBar(
+		    title: new Text("Search"),
+
+	    ),
 	    
-	    body: new Container(
-		    padding: EdgeInsets.all(10.0),
-		    child: new ListView(
+	    body: new ListView(
 
 			    children: <Widget>[
-			    	new TextField(
-					    controller: searchController,
-					    decoration: new InputDecoration(
-						    icon: new Icon(Icons.search),
-						    hintText: "Type location",
+			    	
+			    	
+			    	new ListTile(
+			    	  title: new TextField(
+					      controller: searchController,
+					      decoration: new InputDecoration(
+						      icon: new Icon(Icons.search),
+						      hintText: "Type City",
 
-					    ),
-				    )
+					      ),
+				      ),
+			    	),
 
+
+
+				    new ListTile(
+				      title: new FlatButton(
+					      child: new Text("Send to Next Screen"),
+					      textColor: Colors.white,
+					      color: Theme.of(context).accentColor,
+					      onPressed: (){
+					      	Navigator.pop(context, {
+					      		'city': searchController.text,
+						      });
+
+					      },
+				      ),
+				    ),
 
 
 			    ],
 		    ),
-	    ),
-	    
-	    
-	    
-    );
+	    );
+
   }
+
+
 }

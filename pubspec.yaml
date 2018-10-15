@@ -47,20 +47,18 @@ flutter:
 
   assets:
     - assets/images/clouds_one.png
-    - assets/images/clouds_three.png
-    - assets/images/half_cloudy.png
-    - assets/images/lightning.png
+    - assets/images/Clouds.png
+    - assets/images/Clouds_scattered clouds.png
+    - assets/images/Clouds_few clouds.png
+    - assets/images/Thunderstorm.png
     - assets/images/lightning_rain.png
     - assets/images/rain_one_drop.png
-    - assets/images/rain_two_drop.png
-    - assets/images/rain_three_drop.png
+    - assets/images/Rain_light rain.png
+    - assets/images/Rain.png
     - assets/images/raindrop.png
-    - assets/images/sun.png
-#    - assets/images/light_rain.png
-    - assets/images/little_icons/humidity_icon.png
-    - assets/images/little_icons/raindrop_icon.png
-    - assets/images/little_icons/temperature_icon.png
-    - assets/images/little_icons/wind_speed_icon.png
+    - assets/images/Clear.png
+    - assets/images/sunrise.png
+    - assets/images/sunset.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
