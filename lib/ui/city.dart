@@ -11,18 +11,18 @@ import 'package:http/http.dart' as http;
 var dateFormat;
 var timeFormat;
 
-class CityTab extends StatefulWidget{
+class City extends StatefulWidget{
 	final String city;
 
-	CityTab({Key key, this.city}) : super(key: key);
+	City({Key key, this.city}) : super(key: key);
 
 	@override
 	State<StatefulWidget> createState() {
-		return new CityTabState();
+		return new CityState();
 	}
 }
 
-class CityTabState extends State<CityTab> {
+class CityState extends State<City> {
 	String _city;
 
 
@@ -190,7 +190,7 @@ class CityTabState extends State<CityTab> {
 					Map content = snapshot.data;
 					return new Image.asset("assets/images/${content['weather'][0]['main']}.png", height: 150.0, width: 150.0,);
 				} else {
-					return new Image.asset("assets/images/raindrop.png", height: 150.0, width: 150.0,);
+					return new Image.asset("assets/images/Clear.png", height: 150.0, width: 150.0,);
 				}
 			});
 	}

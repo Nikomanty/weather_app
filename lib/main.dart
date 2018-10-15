@@ -4,7 +4,7 @@ import './ui/city.dart';
 void main(){
   runApp(new MaterialApp(
     title: "WeatherApp",
-    home: CityTab(),
+    home: City(),
     theme: new ThemeData(
       backgroundColor: Colors.blueGrey,
       primaryColor: Colors.blue,
