@@ -48,6 +48,7 @@ flutter:
   assets:
     - assets/images/Clear.png
     - assets/images/Clouds.png
+    - assets/images/Fog.png
     - assets/images/Mist.png
     - assets/images/Rain.png
     - assets/images/sunrise.png

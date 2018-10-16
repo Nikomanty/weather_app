@@ -50,6 +50,19 @@ class CityState extends State<City> {
         ],
       ),
       body: new Container(
+        decoration: new BoxDecoration(
+          gradient: new LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.4, 0.7, 0.9],
+            colors: [
+              Colors.blue[900],
+              Colors.blue[800],
+              Colors.blue[500],
+              Colors.blue[300],
+            ],
+          ),
+        ),
         padding: EdgeInsets.all(10.0),
         child: new ListView(
           children: <Widget>[
@@ -74,13 +87,12 @@ class CityState extends State<City> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         updateCurrentWeatherWidget(_city, "main", "temp", "ºC"),
-                        updateCurrentWeatherWidget(
-                            _city, "main", "humidity", "%"),
-                        updateCurrentWeatherWidget(
-                            _city, "wind", "speed", "m/s"),
+                        updateCurrentWeatherWidget(_city, "main", "humidity", "%"),
+                        updateCurrentWeatherWidget(_city, "wind", "speed", "m/s"),
                       ],
                     ),
                   )),
+
                 ],
               ),
             ),
@@ -105,7 +117,10 @@ class CityState extends State<City> {
               "5 day / 3 Hour Forecast",
               style: new TextStyle(fontSize: 20.0, color: Colors.white),
             ),
+
+            //new SafeArea(child: weekForecast(_city)),
             new SafeArea(child: weekForecast(_city)),
+
           ],
         ),
       ),
@@ -114,16 +129,15 @@ class CityState extends State<City> {
 
   //Futures
 
-  Future<Map> getWeather(String appId, String city) async {
+  Future<Map> getWeather(String city) async {
     String apiUrl =
-        "http://api.openweathermap.org/data/2.5/weather?q=$city&appid=${util.appId}&units=metric";
+        "http://api.openweathermap.org/data/2.5/weather?q=$city&appid=8ae4bfcdd85127081911f63765a8f29d&units=metric";
     http.Response response = await http.get(apiUrl);
     return json.decode(response.body);
   }
 
-  Future<Map> hourWeather(String appId, String city) async {
-    String apiUrl =
-        "http://api.openweathermap.org/data/2.5/forecast?q=$city&appid=${util.appId}&units=metric";
+  Future<Map> hourWeather(String city) async {
+    String apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=$city&appid=8ae4bfcdd85127081911f63765a8f29d&units=metric";
     http.Response response = await http.get(apiUrl);
     return json.decode(response.body);
   }
@@ -153,7 +167,7 @@ class CityState extends State<City> {
   //Widget for current weather
   Widget updateCurrentWeatherWidget(String city, String jsonObject, String jsonField, String suffix) {
     return new FutureBuilder(
-        future: getWeather(util.appId, city == null ? util.defaultCity : city),
+        future: getWeather(city == null ? util.defaultCity : city),
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             Map content = snapshot.data;
@@ -180,7 +194,7 @@ class CityState extends State<City> {
 
   Widget updateCurrentWeatherIcon(String city) {
     return new FutureBuilder(
-        future: getWeather(util.appId, city == null ? util.defaultCity : city),
+        future: getWeather(city == null ? util.defaultCity : city),
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             Map content = snapshot.data;
@@ -202,14 +216,14 @@ class CityState extends State<City> {
   //Widget for sunset - sunrise weather
   Widget sunriseSunsetWidget(String city, String riseOrSet) {
     return FutureBuilder(
-        future: getWeather(util.appId, city == null ? util.defaultCity : city),
+        future: getWeather(city == null ? util.defaultCity : city),
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             Map content = snapshot.data;
 
             dateFormat = new DateFormat.Hm();
             DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                content['sys']['$riseOrSet'] * 1000);
+              content['sys']['$riseOrSet'] * 1000);
             var _date = dateFormat.format(date);
 
             return new Column(
@@ -236,7 +250,7 @@ class CityState extends State<City> {
   //Widget for 5day / 3 Hour weather
   Widget weekForecast(String city) {
     return FutureBuilder(
-        future: hourWeather(util.appId, city == null ? util.defaultCity : city),
+        future: hourWeather(city == null ? util.defaultCity : city),
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             Map content = snapshot.data;
@@ -261,8 +275,6 @@ class CityState extends State<City> {
                     var _date = dateFormat.format(date);
                     var _time = timeFormat.format(time);
 
-                    double temp = _days[index]['main']['temp'];
-
                     return new Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5.0, horizontal: 10.0),
@@ -284,12 +296,12 @@ class CityState extends State<City> {
                             width: 40.0,
                           ),
                           new Text(
-                            "${temp.round()} ºC",
+                            "${_days[index]['main']['temp']} ºC",
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 18.0),
                           ),
                           new Text(
-                            "${_days[index]['wind']['speed']} %",
+                            "${_days[index]['wind']['speed']} m/s",
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 15.0),
                           ),
