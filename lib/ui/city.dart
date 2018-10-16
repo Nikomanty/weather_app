@@ -261,7 +261,7 @@ class CityState extends State<City> {
             return new Container(
               height: 180.0,
               child: ListView.builder(
-                  itemCount: _days.length,
+                  itemCount: _days.length-1,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, position) {
                     final int index = position + 1;
