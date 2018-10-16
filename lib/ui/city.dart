@@ -34,21 +34,9 @@ class CityState extends State<City> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: new AppBar(
-        title: new Text("WeatherApp"),
-        actions: <Widget>[
-//					new IconButton(
-//						icon: new Icon(Icons.my_location), onPressed: null
-//					),
 
-          new IconButton(
-            icon: new Icon(Icons.search),
-            onPressed: () {
-              searchCity(context);
-            },
-          ),
-        ],
-      ),
+
+
       body: new Container(
         decoration: new BoxDecoration(
           gradient: new LinearGradient(
@@ -110,7 +98,7 @@ class CityState extends State<City> {
               ),
             ),
             new Divider(
-              height: 15.0,
+              height: 25.0,
               color: Colors.white,
             ),
             new Text(
@@ -118,7 +106,6 @@ class CityState extends State<City> {
               style: new TextStyle(fontSize: 20.0, color: Colors.white),
             ),
 
-            //new SafeArea(child: weekForecast(_city)),
             new SafeArea(child: weekForecast(_city)),
 
           ],
@@ -156,11 +143,25 @@ class CityState extends State<City> {
   }
 
   Widget showCity() {
-    return new Center(
-      child: new Text(
-        _city == null ? util.defaultCity : _city,
-        style: new TextStyle(fontSize: 35.0, color: Colors.white),
-      ),
+    return new Container(
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          new Text(
+              _city == null ? util.defaultCity : _city,
+              style: new TextStyle(fontSize: 35.0, color: Colors.white),
+            ),
+
+
+          new IconButton(
+            alignment: Alignment.centerRight,
+            icon: new Icon(Icons.search, color: Colors.white,),
+            onPressed: () {
+              searchCity(context);
+            },
+          ),
+        ],
+      )
     );
   }
 
