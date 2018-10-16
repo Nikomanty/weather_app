@@ -17,30 +17,52 @@ class SearchState extends State<Search> {
       appBar: new AppBar(
         title: new Text("Search"),
       ),
-      body: new ListView(
-        children: <Widget>[
-          new ListTile(
-            title: new TextField(
-              controller: searchController,
-              decoration: new InputDecoration(
-                icon: new Icon(Icons.search),
-                hintText: "Type City",
+      body: Container(
+        decoration: new BoxDecoration(
+          gradient: new LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.4, 0.7, 0.9],
+            colors: [
+              Colors.blue[900],
+              Colors.blue[800],
+              Colors.blue[500],
+              Colors.blue[300],
+            ],
+          ),
+        ),
+        child: new ListView(
+          children: <Widget>[
+            new ListTile(
+              title: new TextField(
+                controller: searchController,
+                decoration: new InputDecoration(
+                  icon: new Icon(Icons.search, color: Colors.white,),
+                  hintText: "Type City",
+                  labelStyle: new TextStyle(
+                    color: Colors.white,
+                  ),
+                  hintStyle: new TextStyle(
+                    color: Colors.white,
+                  ),
+
+                ),
               ),
             ),
-          ),
-          new ListTile(
-            title: new FlatButton(
-              child: new Text("Send to Next Screen"),
-              textColor: Colors.white,
-              color: Theme.of(context).accentColor,
-              onPressed: () {
-                Navigator.pop(context, {
-                  'city': searchController.text,
-                });
-              },
+            new ListTile(
+              title: new FlatButton(
+                child: new Text("Send to Next Screen"),
+                textColor: Colors.white,
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  Navigator.pop(context, {
+                    'city': searchController.text,
+                  });
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

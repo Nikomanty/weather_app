@@ -198,8 +198,10 @@ class CityState extends State<City> {
         builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             Map content = snapshot.data;
+            var weatherIcon = content['weather'][0]['main'];
+
             return new Image.asset(
-              "assets/images/${content['weather'][0]['main']}.png",
+              "assets/images/${weatherIcon.toString()}.png",
               height: 150.0,
               width: 150.0,
             );
@@ -275,6 +277,10 @@ class CityState extends State<City> {
                     var _date = dateFormat.format(date);
                     var _time = timeFormat.format(time);
 
+                    var temp = _days[index]['main']['temp'];
+                    var wind = _days[index]['wind']['speed'];
+                    var icon = _days[index]['weather'][0]['main'];
+
                     return new Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5.0, horizontal: 10.0),
@@ -291,17 +297,17 @@ class CityState extends State<City> {
                           ),
                           new Padding(padding: EdgeInsets.only(top: 10.0)),
                           new Image.asset(
-                            "assets/images/${_days[index]['weather'][0]['main'].toString()}.png",
+                            "assets/images/${icon.toString()}.png",
                             height: 40.0,
                             width: 40.0,
                           ),
                           new Text(
-                            "${_days[index]['main']['temp']} ºC",
+                            "${temp.toStringAsFixed(1)} ºC",
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 18.0),
                           ),
                           new Text(
-                            "${_days[index]['wind']['speed']} m/s",
+                            "${wind.toStringAsFixed(1)} m/s",
                             style: new TextStyle(
                                 color: Colors.white, fontSize: 15.0),
                           ),
