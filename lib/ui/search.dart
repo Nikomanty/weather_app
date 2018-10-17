@@ -36,15 +36,14 @@ class SearchState extends State<Search> {
             new ListTile(
               title: new TextField(
                 controller: searchController,
+                style: new TextStyle(color: Colors.white),
                 decoration: new InputDecoration(
                   icon: new Icon(Icons.search, color: Colors.white,),
                   hintText: "Type City",
-                  labelStyle: new TextStyle(
-                    color: Colors.white,
-                  ),
                   hintStyle: new TextStyle(
                     color: Colors.white,
                   ),
+
 
                 ),
               ),
